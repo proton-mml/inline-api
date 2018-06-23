@@ -3,7 +3,7 @@ export default class BaseRepositoryPG {
 		this.model = model;
 	}
 	async create(data) {
-		
+
 	}
 
 	async getAll(query = {}, filter = { __v: 0 }, options = { lean: true }, sort = { updated_at: -1 }) {
