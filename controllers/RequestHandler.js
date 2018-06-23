@@ -1,8 +1,8 @@
 import ControllersFactory from './ControllersFactory';
 
 export default class RequestHandler {
-	constructor(app, jwtsecret, mongo) {
-		this.controllersFactory = new ControllersFactory(app, jwtsecret, mongo);
+	constructor(app, jwtsecret, mongo, pg) {
+		this.controllersFactory = new ControllersFactory(app, jwtsecret, mongo, pg);
 
 		this.get = this.get.bind(this);
 		this.post = this.post.bind(this);

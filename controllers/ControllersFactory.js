@@ -1,11 +1,14 @@
 import { BaseRepository } from "../db/index";
+import { BaseRepositoryPG } from "../db/index";
 
 export default class ControllersFactory {
-	constructor(app, jwtsecret, mongo) {
-
+	constructor(app, jwtsecret, mongo, pg) {
+		const users = new BaseRepositoryPG(pg.users);
+		this.users = new User(users, pg, jwtsecret);
 	}
 
 	postControllers(url) {
+		if(/^(\/user\/new)$/.test(url)) return this.users.newUser;
 		return this.notFound;
 	}
 
