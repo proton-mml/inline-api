@@ -3,7 +3,7 @@ import express from 'express';
 
 import Router from './Router';
 import { root } from '../app';
-import { MongoDB, PostgreSQL } from '../db/index';
+import { MongoDB } from '../db/index';
 
 
 const dashUrl = process.env.DASH_URL || 'http://localhost:8080';
@@ -40,10 +40,7 @@ app.set('pgUrl', pgUrl);
 app.set('port', port);
 
 const mongo = new MongoDB(env, mongoUrl);
-mongo.init();
-
-const pg = new PostgreSQL(env, pgUrl);
-pg.init();
+// mongo.init();
 
 const router = new Router(app, jwtsecret, mongo);
 router.init();
