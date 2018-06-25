@@ -18,6 +18,10 @@ class PGConnectionClass {
     end() {
         this.client.end();
     }
+
+    newConnection() {
+        return new PGConnectionClass();
+    }
 }
 
 module.exports = new PGConnectionClass();
