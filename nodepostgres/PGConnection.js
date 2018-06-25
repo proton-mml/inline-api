@@ -8,11 +8,10 @@ class PGConnectionClass {
     }
 
     async query(text, values) {
-        var query = {
+        let query = {
             text: text,
             values: values
         };
-
         return await this.client.query(query);
     }
 
@@ -22,5 +21,3 @@ class PGConnectionClass {
 }
 
 module.exports = new PGConnectionClass();
-
-
