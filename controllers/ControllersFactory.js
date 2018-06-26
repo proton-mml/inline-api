@@ -14,15 +14,18 @@ export default class ControllersFactory {
                 return await Estabelecimento.getByEmpresa(email_empresa);
             });
 
+        if(/^(\/avaliacoes)/.test(url))
+            return (async (params, query) =>
+                    await Avaliacao.getByEmailEstabelecimento(params.email));
+
 		return this.notFound;
 	}
 
 	getControllers(url) {
-        if(/^(\/avaliacao)$/.test(url))
-            return (async (params, query) => (await Avaliacao.getByEmailEstabelecimento('fanfafa@fanfa.com')));
-
         if(/^(\/empresas)$/.test(url))
             return (async (params, query) => (await Empresa.getAll()));
+
+
 
 
         return this.notFound;

@@ -16,7 +16,7 @@ export default class Estabelecimento {
 
     static async getByEmpresa(email_empresa) {
         console.log(email_empresa);
-        let query_estabelecimentos = "SELECT * FROM inline.estabelecimento NATURAL JOIN inline.usuario WHERE email_empresa=$1";
+        let query_estabelecimentos = "SELECT nome, email FROM inline.estabelecimento NATURAL JOIN inline.usuario WHERE email_empresa=$1";
         let estabelecimentos = (await PGConnection.query(query_estabelecimentos, [email_empresa])).rows;
 
         return estabelecimentos;

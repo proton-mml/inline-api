@@ -3,7 +3,7 @@ const PGConnection = require('../../db/PGConnection.js');
 export default class Avaliacao {
     static async getByEmailEstabelecimento(email_estabelecimento) {
         let query = "SELECT * FROM inline.avaliacao WHERE email_estabelecimento = $1";
-        return  (await PGConnection.query(query, [email_estabelecimento])).rows;
+        return (await PGConnection.query(query, [email_estabelecimento])).rows;
     }
 
     static async getByEmailCliente(email_cliente) {
