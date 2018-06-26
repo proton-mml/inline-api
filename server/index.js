@@ -8,9 +8,14 @@ import { MongoDB } from '../db/index';
 
 const dashUrl = process.env.DASH_URL || 'http://localhost:8080';
 const pwaUrl = process.env.PWA_URL || 'http://localhost:8081';
-const env = process.env.NODE_ENV || 'local';
+const PGHOST = process.env.PGHOST || 'local';
+const PGPORT = process.env.PGPORT || 'local';
+const PGUSER = process.env.PGUSER || 'local';
+const PGPASSWORD = process.env.PGPASSWORD || 'local';
+const PGDATABASE = process.env.PGDATABASE || 'local';
 const port = process.env.PORT || 3300;
-const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/inline';
+const env = process.env.NODE_ENV || 'local';
+const mongoUrl = process.env.MONGO_URL || 'mongodb://marcos:marcos123@35.199.174.155:27017/cool_db';
 const pgUrl = process.env.PG_URL;
 const jwtsecret = process.env.JWTSECRET || 'inline123';
 
@@ -37,7 +42,11 @@ app.set('pwaUrl', pwaUrl);
 app.set('env', env);
 app.set('mongoUrl', mongoUrl);
 app.set('pgUrl', pgUrl);
-app.set('port', port);
+app.set('PGHOST', PGHOST);
+app.set('PGPORT', PGPORT);
+app.set('PGUSER', PGUSER);
+app.set('PGPASSWORD', PGPASSWORD);
+app.set('PGDATABASE', PGDATABASE);
 
 const mongo = new MongoDB(env, mongoUrl);
 // mongo.init();
