@@ -9,7 +9,7 @@ export default class Empresa {
         return empresa;
     }
 
-    static async insert (nome, email, cnpj, endereco, senha) {
+    static async insert(nome, email, cnpj, endereco, senha) {
         let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'empresa', $2, $3)";
         let query_empresa = "INSERT INTO inline.empresa(email, cnpj, id_endereco) VALUES ($1, $2, $3)";
         let query_endereco = "INSERT INTO inline.endereco(estado, cidade, logradouro, numero, complemento) VALUES ($1, $2, $3, $4, $5)";
@@ -61,7 +61,7 @@ export default class Empresa {
 
     static async getAll() {
         let query_empresas = "SELECT usuario.nome FROM inline.usuario INNER JOIN inline.empresa ON usuario.email = empresa.email";
-        var empresas = (await PGConnection.query(query_empresas, [])).rows.map((empresa, i, e) => empresa.nome);
+        var empresas = (await PGConnection.query(query_empresas, [])).rows;
         return empresas;
     }
 }

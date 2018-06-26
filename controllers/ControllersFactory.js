@@ -8,6 +8,11 @@ export default class ControllersFactory {
 	}
 
 	postControllers(url) {
+        if(/^\/estabelecimentos/.test(url))
+            return (async (params, query) => {
+                let email_empresa = params.email;
+                return await Estabelecimento.getByEmpresa(email_empresa);
+            });
 
 		return this.notFound;
 	}
@@ -18,6 +23,7 @@ export default class ControllersFactory {
 
         if(/^(\/empresas)$/.test(url))
             return (async (params, query) => (await Empresa.getAll()));
+
 
         return this.notFound;
 	}

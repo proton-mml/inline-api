@@ -14,6 +14,14 @@ export default class Estabelecimento {
         return estabelecimento;
     }
 
+    static async getByEmpresa(email_empresa) {
+        console.log(email_empresa);
+        let query_estabelecimentos = "SELECT * FROM inline.estabelecimento WHERE email_empresa=$1";
+        let estabelecimentos = (await PGConnection.query(query_estabelecimentos, [email_empresa])).rows;
+
+        return estabelecimentos;
+    }
+
     static async insert(nome, email, endereco, posicao_gps, senha) {
         let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'empresa', $2, $3)";
         let query_estabelecimento = "INSERT INTO inline.estabelecimento(email, cnpj, id_endereco, posicao_gps) VALUES ($1, $2, $3, $4)";
