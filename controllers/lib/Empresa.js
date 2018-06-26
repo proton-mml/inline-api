@@ -60,7 +60,7 @@ export default class Empresa {
     }
 
     static async getAll() {
-        let query_empresas = "SELECT usuario.nome FROM inline.usuario INNER JOIN inline.empresa ON usuario.email = empresa.email";
+        let query_empresas = "SELECT usuario.nome, empresa.email FROM inline.usuario INNER JOIN inline.empresa ON usuario.email = empresa.email";
         var empresas = (await PGConnection.query(query_empresas, [])).rows;
         return empresas;
     }
