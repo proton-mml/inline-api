@@ -1,4 +1,5 @@
 const PGConnection = require('../../db/PGConnection.js');
+import { EncryptionUtility } from '../../helper';
 
 export default class ClienteCadastrado {
 
@@ -8,6 +9,7 @@ export default class ClienteCadastrado {
     }
 
     static async insert (nome, email, celular, prioridade, senha) {
+        let encrypted = EncryptionUtility.hash(senha);
         let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'cliente cadastrado', $2, $3)";
         let query_cliente = "INSERT INTO inline.cliente(telefone_celular, tipo_prioridade) VALUES ($1, $2)";
         let query_cliente_cadastrado = "INSERT INTO inline.cliente_cadastrado(email, id_cliente) VALUES ($1, $2)";
@@ -16,7 +18,7 @@ export default class ClienteCadastrado {
 
         try {
             await Conn.query('BEGIN');
-            await Conn.query(query_usuario, [nome, email, senha]);
+            await Conn.query(query_usuario, [nome, email, encrypted]);
             await Conn.query(query_cliente, [celular, prioridade]);
             let user = (await Conn.query("SELECT id FROM inline.cliente WHERE tipo_prioridade = $1 and telefone_celular = $2", [prioridade, celular]));
             await Conn.query(query_cliente_cadastrado, [email, user.rows[0].id]);

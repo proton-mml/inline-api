@@ -1,6 +1,6 @@
 import { BaseRepository } from "../db/index";
 import { BaseRepositoryPG } from "../db/index";
-import { Avaliacao, Empresa, Cliente, Estabelecimento } from '.';
+import { Avaliacao, Empresa, Cliente, Estabelecimento, Authorize } from '.';
 
 export default class ControllersFactory {
 	constructor(app, jwtsecret, mongo, pg) {
@@ -17,6 +17,11 @@ export default class ControllersFactory {
         if(/^(\/avaliacoes)/.test(url))
             return (async (params, query) =>
                     await Avaliacao.getByEmailEstabelecimento(params.email));
+
+        if(/^(\/autorizar)/.test(url))
+            return (async (body, query) => {
+							return await Authorize.login(body.email, body.senha);
+						});
 
 		return this.notFound;
 	}

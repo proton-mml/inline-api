@@ -49,7 +49,7 @@ app.set('PGPASSWORD', PGPASSWORD);
 app.set('PGDATABASE', PGDATABASE);
 
 const mongo = new MongoDB(env, mongoUrl);
-// mongo.init();
+mongo.init();
 
 const router = new Router(app, jwtsecret, mongo);
 router.init();
