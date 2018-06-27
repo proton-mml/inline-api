@@ -1,9 +1,14 @@
 const PGConnection = require('../../db/PGConnection.js');
+import { EncryptionUtility } from '../../helper';
 
 export default class Avaliacao {
-    static async getByEmailEstabelecimento(email_estabelecimento) {
-        let query = "SELECT * FROM inline.avaliacao WHERE email_estabelecimento = $1";
-        return (await PGConnection.query(query, [email_estabelecimento])).rows;
+    static async getByEmailEstabelecimento(email_estabelecimento, token) {
+      const validation = EncryptionUtility.validateToken(token, 'frangos');
+      if (validation.error) return ({success:false, error: 'token invalido'});
+      const { nome, email, celular, prioridade, senha } = validation.decoded;
+
+      let query = "SELECT * FROM inline.avaliacao WHERE email_estabelecimento = $1";
+      return (await PGConnection.query(query, [email_estabelecimento])).rows;
     }
 
     static async getByEmailCliente(email_cliente) {

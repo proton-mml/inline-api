@@ -10,11 +10,19 @@ export default class ClienteCadastrado {
 
     static async insert (nome, email, celular, prioridade, senha) {
         let encrypted = EncryptionUtility.hash(senha);
+        let usuario = "SELECT * FROM inline.usuario WHERE usuario.email = $1";
         let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'cliente cadastrado', $2, $3)";
         let query_cliente = "INSERT INTO inline.cliente(telefone_celular, tipo_prioridade) VALUES ($1, $2)";
         let query_cliente_cadastrado = "INSERT INTO inline.cliente_cadastrado(email, id_cliente) VALUES ($1, $2)";
-
         let Conn = (await PGConnection.newConnection());
+
+        var resp = (await PGConnection.query(usuario, [email])).rows[0];
+        if (resp) {
+          return ({
+            error: "email em uso",
+            success: false
+          });
+        }
 
         try {
             await Conn.query('BEGIN');
@@ -27,9 +35,15 @@ export default class ClienteCadastrado {
         } catch (e) {
             await Conn.query('ROLLBACK');
             await Conn.end();
-            return e;
+            return ({
+              error: e,
+              success: false
+            });
+
         }
-        return true;
+        return ({
+          success: true
+        });
     }
 
     static async deleteByEmail (email) {

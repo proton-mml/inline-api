@@ -1,4 +1,5 @@
 const PGConnection = require('../../db/PGConnection.js');
+import { EncryptionUtility } from '../../helper';
 
 export default class Estabelecimento {
     static async getByEmail(email) {
@@ -14,12 +15,14 @@ export default class Estabelecimento {
         return estabelecimento;
     }
 
-    static async getByEmpresa(email_empresa) {
-        console.log(email_empresa);
-        let query_estabelecimentos = "SELECT nome, email FROM inline.estabelecimento NATURAL JOIN inline.usuario WHERE email_empresa=$1";
-        let estabelecimentos = (await PGConnection.query(query_estabelecimentos, [email_empresa])).rows;
+    static async getByEmpresa(email_empresa, token) {
+      const validation = EncryptionUtility.validateToken(token, 'frangos');
+      if (validation.error) return ({success:false, error: 'token invalido'});
+      const { nome, email, celular, prioridade, senha } = validation.decoded;
 
-        return estabelecimentos;
+      let query_estabelecimentos = "SELECT nome, email FROM inline.estabelecimento NATURAL JOIN inline.usuario WHERE email_empresa=$1";
+      let estabelecimentos = (await PGConnection.query(query_estabelecimentos, [email_empresa])).rows;
+      return estabelecimentos;
     }
 
     static async insert(nome, email, endereco, posicao_gps, senha) {
@@ -50,4 +53,3 @@ export default class Estabelecimento {
 
     }
 }
-

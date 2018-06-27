@@ -1,6 +1,6 @@
 import { BaseRepository } from "../db/index";
 import { BaseRepositoryPG } from "../db/index";
-import { Avaliacao, Empresa, Cliente, Estabelecimento, Authorize } from '.';
+import { Avaliacao, Empresa, ClienteCadastrado, Estabelecimento, Authorize } from '.';
 
 export default class ControllersFactory {
 	constructor(app, jwtsecret, mongo, pg) {
@@ -8,20 +8,25 @@ export default class ControllersFactory {
 	}
 
 	postControllers(url) {
-        if(/^\/estabelecimentos/.test(url))
-            return (async (params, query) => {
-                let email_empresa = params.email;
-                return await Estabelecimento.getByEmpresa(email_empresa);
-            });
+		if(/^\/estabelecimentos/.test(url))
+			return (async (body, query) => {
+				return await Estabelecimento.getByEmpresa(body.email_empresa, body.token);
+			});
 
-        if(/^(\/avaliacoes)/.test(url))
-            return (async (params, query) =>
-                    await Avaliacao.getByEmailEstabelecimento(params.email));
+		if(/^(\/avaliacoes)/.test(url))
+			return (async (body, query) => {
+				return await Avaliacao.getByEmailEstabelecimento(body.email, body.token);
+			});
 
-        if(/^(\/autorizar)/.test(url))
-            return (async (body, query) => {
-							return await Authorize.login(body.email, body.senha);
-						});
+		if(/^(\/autorizar)/.test(url))
+			return (async (body, query) => {
+				return await Authorize.login(body.email, body.senha);
+			});
+
+		if(/^(\/cadastrar)/.test(url))
+			return (async (body, query) => {
+				return await ClienteCadastrado.insert(body.nome, body.email, body.celular, body.prioridade, body.senha);
+			});
 
 		return this.notFound;
 	}
@@ -29,9 +34,6 @@ export default class ControllersFactory {
 	getControllers(url) {
         if(/^(\/empresas)$/.test(url))
             return (async (params, query) => (await Empresa.getAll()));
-
-
-
 
         return this.notFound;
 	}

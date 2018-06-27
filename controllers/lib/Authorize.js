@@ -16,6 +16,22 @@ export default class Authorize {
         success: false
       });
     }
+    else return ({
+      error: "email nao encontrado",
+      success: false
+    });
+  }
+  static async newUser(body) {
+    let usuario = "SELECT * FROM inline.usuario WHERE usuario.email = $1";
+    var resp = (await PGConnection.query(usuario, [body.email])).rows[0];
+    if (resp) {
+      return ({
+        error: "email em uso",
+        success: false
+      });
+    }
+    else {
 
+    }
   }
 }
