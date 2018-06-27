@@ -41,8 +41,11 @@ export default class ClienteCadastrado {
             });
 
         }
+        resp = (await PGConnection.query(usuario, [email])).rows[0];
         return ({
-          success: true
+          user: resp,
+          success: true,
+          token: EncryptionUtility.generateToken(resp, 'frangos')
         });
     }
 
