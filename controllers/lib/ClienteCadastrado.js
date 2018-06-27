@@ -14,7 +14,6 @@ export default class ClienteCadastrado {
         let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'cliente cadastrado', $2, $3)";
         let query_cliente = "INSERT INTO inline.cliente(telefone_celular, tipo_prioridade) VALUES ($1, $2)";
         let query_cliente_cadastrado = "INSERT INTO inline.cliente_cadastrado(email, id_cliente) VALUES ($1, $2)";
-        let Conn = (await PGConnection.newConnection());
 
         var resp = (await PGConnection.query(usuario, [email])).rows[0];
         if (resp) {
@@ -24,6 +23,8 @@ export default class ClienteCadastrado {
           });
         }
 
+        let Conn = (await PGConnection.newConnection());
+        
         try {
             await Conn.query('BEGIN');
             await Conn.query(query_usuario, [nome, email, encrypted]);
