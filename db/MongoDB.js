@@ -11,8 +11,7 @@ export default class MongoDB {
 		const Schema = mongoose.Schema;
 		mongoose.connect(this.mongoUrl);
 		console.log(`MONGO: Connected to ${this.env} - ${this.mongoUrl}`);
-
-		this.Fila = mongoose.model('filas', filas(Schema));
+		this.Filas = mongoose.model('filas', filas(Schema));
 	}
 
 }
