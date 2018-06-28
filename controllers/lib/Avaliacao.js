@@ -7,7 +7,7 @@ export default class Avaliacao {
       if (validation.error) return ({success:false, error: 'token invalido'});
       const { nome, email, celular, prioridade, senha } = validation.decoded;
 
-      let query = "SELECT * FROM inline.avaliacao WHERE email_estabelecimento = $1";
+      let query = "SELECT avaliacao.*, usuario.nome FROM inline.avaliacao INNER JOIN inline.usuario ON usuario.email = avaliacao.email_cliente WHERE email_estabelecimento = $1";
       return (await PGConnection.query(query, [email_estabelecimento])).rows;
     }
 
