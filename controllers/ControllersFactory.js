@@ -1,10 +1,11 @@
 import { BaseRepository } from "../db/index";
 import { BaseRepositoryPG } from "../db/index";
-import { Avaliacao, Empresa, ClienteCadastrado, Estabelecimento, Authorize } from '.';
+import { Avaliacao, Empresa, ClienteCadastrado, Estabelecimento, Authorize, Filas } from '.';
 
 export default class ControllersFactory {
 	constructor(app, jwtsecret, mongo, pg) {
-
+		const fila = new BaseRepository(mongo.Filas);
+		this.filas = new Filas(jwtsecret, fila);
 	}
 
 	postControllers(url) {
@@ -33,14 +34,18 @@ export default class ControllersFactory {
 				return await ClienteCadastrado.insert(body.nome, body.email, body.celular, body.prioridade, body.senha);
 			});
 
-        if(/^(\/empresas)/.test(url))
-            return (async (body, query) => (await Empresa.getAll()));
+    if(/^(\/empresas)/.test(url))
+      return (async (body, query) => (await Empresa.getAll()));
 
 		return this.notFound;
 	}
 
 	getControllers(url) {
-        return this.notFound;
+		if(/^(\/filas)/.test(url))
+			return (async (body, query) => {
+				return await this.filas.todasFilas(body, query);
+		});
+    return this.notFound;
 	}
 
 	putControllers(url) {
