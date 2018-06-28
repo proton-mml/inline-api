@@ -7,6 +7,7 @@ This is the backend server for the inline system.
 ```
   $ npm install
   $ sudo npm install nodemon -g
+  ```
 
 ### Set environment variables
 ```
