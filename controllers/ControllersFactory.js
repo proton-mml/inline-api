@@ -28,13 +28,13 @@ export default class ControllersFactory {
 				return await ClienteCadastrado.insert(body.nome, body.email, body.celular, body.prioridade, body.senha);
 			});
 
+        if(/^(\/empresas)/.test(url))
+            return (async (body, query) => (await Empresa.getAll()));
+
 		return this.notFound;
 	}
 
 	getControllers(url) {
-        if(/^(\/empresas)$/.test(url))
-            return (async (params, query) => (await Empresa.getAll()));
-
         return this.notFound;
 	}
 
