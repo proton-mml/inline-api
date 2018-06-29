@@ -19,6 +19,11 @@ export default class ControllersFactory {
 				return await Estabelecimento.getByEmail(body.email_estabelecimento, body.token);
 			});
 
+		if(/^\/validate_token/.test(url))
+			return (async (body, query) => {
+				return await Authorize.validate(body.token);
+			});
+
 		if(/^(\/avaliacoes)/.test(url))
 			return (async (body, query) => {
 				return await Avaliacao.getByEmailEstabelecimento(body.email, body.token);
