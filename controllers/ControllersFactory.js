@@ -34,9 +34,9 @@ export default class ControllersFactory {
 				return await ClienteCadastrado.insert(body.nome, body.email, body.celular, body.prioridade, body.senha);
 			});
 
-		if(/^(\/filas)/.test(url))
+		if(/^(\/filas_ativas)/.test(url))
 			return (async (body, query) => {
-				return await this.filas.filasEmail(body, query);
+				return await this.filas.filasAtivasEmail(body, query);
 		    });
 
 	    if(/^(\/empresas)/.test(url))
