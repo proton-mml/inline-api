@@ -39,7 +39,7 @@ export default class ControllersFactory {
 				return await this.filas.filasAtivasEmail(body.email);
 		    });
 
-        if(/^(\/fila)/.test(url))
+        if(/^(\/fila)$/.test(url))
 			return (async (body, query) => {
 				return await this.filas.filasId(body.id);
 		    });
