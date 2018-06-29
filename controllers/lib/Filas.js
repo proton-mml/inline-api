@@ -14,12 +14,16 @@ export default class Filas {
     }
 
 
-    async filasAtivasEmail(query) {
-        console.log(query);
-        const promise = await this.fila.getAll(query = {id_estabelecimento: query.email,
+    async filasAtivasEmail(email) {
+        const promise = await this.fila.getAll({id_estabelecimento: email,
                                                         // data_hora_fim: {$gt: new Date()}
                                                        });
 
+        return promise.result;
+    }
+
+    async filasId(id) {
+        const promise = await this.fila.getAll({_id: id});
         return promise.result;
     }
 }

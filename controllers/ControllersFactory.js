@@ -36,11 +36,18 @@ export default class ControllersFactory {
 
 		if(/^(\/filas_ativas)/.test(url))
 			return (async (body, query) => {
-				return await this.filas.filasAtivasEmail(body, query);
+				return await this.filas.filasAtivasEmail(body.email);
 		    });
 
+        if(/^(\/fila)/.test(url))
+			return (async (body, query) => {
+				return await this.filas.filasId(body.id);
+		    });
+
+
 	    if(/^(\/empresas)/.test(url))
-	      return (async (body, query) => (await Empresa.getAll(body.token)));
+	        return (async (body, query) => (await Empresa.getAll(body.token)));
+
 
 		return this.notFound;
 	}
