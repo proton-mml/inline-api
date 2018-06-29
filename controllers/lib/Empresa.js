@@ -1,4 +1,5 @@
 const PGConnection = require('../../db/PGConnection.js');
+import { EncryptionUtility } from '../../helper';
 
 export default class Empresa {
     static async getByEmail(email) {
