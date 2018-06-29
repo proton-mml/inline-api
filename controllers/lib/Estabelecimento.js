@@ -3,6 +3,9 @@ import { EncryptionUtility } from '../../helper';
 
 export default class Estabelecimento {
     static async getByEmail(email) {
+        const validation = EncryptionUtility.validateToken(token, 'frangos');
+        if (validation.error) return ({success:false, error: 'token invalido'});
+
         let query_estabelecimento = "SELECT * FROM inline.estabelecimento WHERE email = $1";
         let query_enderecos = "SELECT * FROM inline.endereco WHERE id = $1";
         let query_hora_dia = "SELECT * FROM inline.hora_dia_funcionamento WHERE email_estabelecimento = $1";
@@ -12,7 +15,7 @@ export default class Estabelecimento {
             estabelecimento.endereco = (await PGConnection.query(query_enderecos, [estabelecimento.id_endereco])).rows[0];
             estabelecimento.hora_dia = (await PGConnection.query(query_hora_dia, [estabelecimento.email_estabelecimento])).rows;
         }
-        return estabelecimento;
+        return {success: true, answer: estabelecimento};
     }
 
     static async getByEmpresa(email_empresa, token) {
@@ -22,7 +25,7 @@ export default class Estabelecimento {
 
       let query_estabelecimentos = "SELECT nome, email FROM inline.estabelecimento NATURAL JOIN inline.usuario WHERE email_empresa=$1";
       let estabelecimentos = (await PGConnection.query(query_estabelecimentos, [email_empresa])).rows;
-      return estabelecimentos;
+      return {success: true, answer: estabelecimentos};
     }
 
     static async insert(nome, email, endereco, posicao_gps, senha) {

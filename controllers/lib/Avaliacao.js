@@ -3,12 +3,13 @@ import { EncryptionUtility } from '../../helper';
 
 export default class Avaliacao {
     static async getByEmailEstabelecimento(email_estabelecimento, token) {
-      const validation = EncryptionUtility.validateToken(token, 'frangos');
-      if (validation.error) return ({success:false, error: 'token invalido'});
-      const { nome, email, celular, prioridade, senha } = validation.decoded;
+        const validation = EncryptionUtility.validateToken(token, 'frangos');
+        if (validation.error) return ({success:false, error: 'token invalido'});
+        const { nome, email, celular, prioridade, senha } = validation.decoded;
 
-      let query = "SELECT avaliacao.*, usuario.nome FROM inline.avaliacao INNER JOIN inline.usuario ON usuario.email = avaliacao.email_cliente WHERE email_estabelecimento = $1";
-      return (await PGConnection.query(query, [email_estabelecimento])).rows;
+        let query = "SELECT avaliacao.*, usuario.nome FROM inline.avaliacao INNER JOIN inline.usuario ON usuario.email = avaliacao.email_cliente WHERE email_estabelecimento = $1";
+        let result = (await PGConnection.query(query, [email_estabelecimento])).rows;
+        return {success: true, answer: result};
     }
 
     static async getByEmailCliente(email_cliente) {

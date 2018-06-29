@@ -60,9 +60,12 @@ export default class Empresa {
     }
 
     static async getAll() {
+        const validation = EncryptionUtility.validateToken(token, 'frangos');
+        if (validation.error) return ({success:false, error: 'token invalido'});
+
         let query_empresas = "SELECT usuario.nome, empresa.email FROM inline.usuario INNER JOIN inline.empresa ON usuario.email = empresa.email";
         var empresas = (await PGConnection.query(query_empresas, [])).rows;
-        return empresas;
+        return {success: true, answer: empresas};
     }
 }
 
