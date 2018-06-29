@@ -19,11 +19,11 @@ export default class Filas {
                                                         // data_hora_fim: {$gt: new Date()}
                                                        });
 
-        return promise.result;
+        return {success: true, answer: promise.result};
     }
 
     async filasId(id) {
-        const promise = await this.fila.getAll({_id: id});
-        return promise.result;
+        const promise = await this.fila.findOne({_id: id});
+        return {success: true, answer: promise.result};
     }
 }

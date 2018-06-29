@@ -12,6 +12,10 @@ export default class BaseRepository {
 		return await this.resolve(this.model.find(query, filter, options).sort(sort));
 	}
 
+	async findOne(query = {}, filter = { __v: 0 }, options = { lean: true }) {
+		return await this.resolve(this.model.findOne(query, filter, options));
+	}
+
 	async findAndUpdate(query, info, options = { new: true }) {
 		return await this.resolve(this.model.findOneAndUpdate(query, info, options));
 	}
