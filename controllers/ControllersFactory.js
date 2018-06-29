@@ -34,6 +34,11 @@ export default class ControllersFactory {
 				return await ClienteCadastrado.insert(body.nome, body.email, body.celular, body.prioridade, body.senha);
 			});
 
+		if(/^(\/filas)/.test(url))
+			return (async (body, query) => {
+				return await this.filas.filasEmail(body, query);
+		    });
+
 	    if(/^(\/empresas)/.test(url))
 	      return (async (body, query) => (await Empresa.getAll(body.token)));
 
@@ -41,10 +46,11 @@ export default class ControllersFactory {
 	}
 
 	getControllers(url) {
-		if(/^(\/filas)/.test(url))
+        if(/^(\/filas)/.test(url))
 			return (async (body, query) => {
 				return await this.filas.todasFilas(body, query);
-		});
+		    });
+
     	return this.notFound;
 	}
 
