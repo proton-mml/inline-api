@@ -24,7 +24,7 @@ export default class ClienteCadastrado {
         }
 
         let Conn = (await PGConnection.newConnection());
-        
+
         try {
             await Conn.query('BEGIN');
             await Conn.query(query_usuario, [nome, email, encrypted]);
@@ -68,9 +68,9 @@ export default class ClienteCadastrado {
         } catch (e) {
             await Conn.query('ROLLBACK');
             await Conn.end();
-            return e;
+            return {success: false, error: e};
         }
-        return true;
+        return {success: true};
     }
 
 }

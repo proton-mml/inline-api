@@ -2,7 +2,7 @@ const PGConnection = require('../../db/PGConnection.js');
 import { EncryptionUtility } from '../../helper';
 
 export default class Estabelecimento {
-    static async getByEmail(email) {
+    static async getByEmail(email, token) {
         const validation = EncryptionUtility.validateToken(token, 'frangos');
         if (validation.error) return ({success:false, error: 'token invalido'});
 
@@ -50,9 +50,8 @@ export default class Estabelecimento {
         } catch (e) {
             await Conn.query('ROLLBACK');
             await Conn.end();
-            return e;
+            return {success: false, error: e};
         }
-        return true;
-
+        return  {success: true};
     }
 }

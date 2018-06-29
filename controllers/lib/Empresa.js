@@ -7,7 +7,7 @@ export default class Empresa {
         let enderecos_query = "SELECT * FROM inline.endereco WHERE id = $1";
         var empresa = (await PGConnection.query(empresa_query, [email])).rows[0];
         if (empresa) empresa.endereco = (await PGConnection.query(enderecos_query, [empresa.id_endereco])).rows[0];
-        return empresa;
+        return {success: true, answer: empresa};
     }
 
     static async insert(nome, email, cnpj, endereco, senha) {
@@ -32,9 +32,9 @@ export default class Empresa {
         } catch (e) {
             await Conn.query('ROLLBACK');
             await Conn.end();
-            return e;
+            return {success: false, answer: e};
         }
-        return true;
+        return {success: true};
     }
 
     static async deleteByEmail (email) {
@@ -55,12 +55,12 @@ export default class Empresa {
         } catch (e) {
             await Conn.query('ROLLBACK');
             await Conn.end();
-            return e;
+            return {success: true, answer: e};
         }
-        return true;
+        return {success: true};
     }
 
-    static async getAll() {
+    static async getAll(token) {
         const validation = EncryptionUtility.validateToken(token, 'frangos');
         if (validation.error) return ({success:false, error: 'token invalido'});
 
@@ -69,4 +69,3 @@ export default class Empresa {
         return {success: true, answer: empresas};
     }
 }
-

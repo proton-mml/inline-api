@@ -34,8 +34,8 @@ export default class ControllersFactory {
 				return await ClienteCadastrado.insert(body.nome, body.email, body.celular, body.prioridade, body.senha);
 			});
 
-    if(/^(\/empresas)/.test(url))
-      return (async (body, query) => (await Empresa.getAll()));
+	    if(/^(\/empresas)/.test(url))
+	      return (async (body, query) => (await Empresa.getAll(body.token)));
 
 		return this.notFound;
 	}
@@ -45,7 +45,7 @@ export default class ControllersFactory {
 			return (async (body, query) => {
 				return await this.filas.todasFilas(body, query);
 		});
-    return this.notFound;
+    	return this.notFound;
 	}
 
 	putControllers(url) {
