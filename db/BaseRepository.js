@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 export default class BaseRepository {
 	constructor(model) {
 		this.model = model;
@@ -36,10 +37,22 @@ export default class BaseRepository {
 	}
 
 	async pullFromCronologica(fila, cliente) {
-		const promise = this.model.update (
-			{_id: fila},
-			{$pull: {"cronologica.entradas": {"id_cliente": cliente}}, $inc: {"tamanho": -1}},
-		);
+        var entrada = (await this.resolve(this.model.aggregate([
+            {$match: {_id: mongoose.Types.ObjectId(fila)}},
+            {$unwind: '$cronologica.entradas'},
+            {$match: {'cronologica.entradas.id_cliente': cliente}}
+        ]))).result[0].cronologica.entradas;
+
+        entrada.desistencia_ou_atendido = "atendido";
+        entrada.data_hora_saida = new Date();
+
+        
+
+		// const promise = this.model.update (
+		// 	{_id: fila},
+		// 	{$pull: {"cronologica.entradas": {"id_cliente": cliente}}, $inc: {"tamanho": -1}},
+		// );
+        return;
 		return await this.resolve(promise);
 	}
 
