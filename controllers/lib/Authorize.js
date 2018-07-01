@@ -5,7 +5,7 @@ export default class Authorize {
   static async validate(token) {
     const validation = EncryptionUtility.validateToken(token, 'frangos');
     if (validation.error) return ({success:false, error: 'token invalido'});
-    return { success: true, user:validation.decoded }
+    return { success: true, user:validation.decoded, token:token }
 
   }
   static async login(email, senha) {

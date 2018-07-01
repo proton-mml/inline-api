@@ -19,6 +19,11 @@ export default class ControllersFactory {
 				return await Estabelecimento.getByEmail(body.email_estabelecimento, body.token);
 			});
 
+		if(/^\/estabelecimento_novo/.test(url))
+			return (async (body, query) => {
+				return await Estabelecimento.insere(body.nome, body.email, body.email_empresa, body.endereco, body.posicao_gps, body.senha, body.cnpj, body.token);
+			});
+
 		if(/^\/validate_token/.test(url))
 			return (async (body, query) => {
 				return await Authorize.validate(body.token);
