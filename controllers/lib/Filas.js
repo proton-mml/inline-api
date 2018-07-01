@@ -41,7 +41,7 @@ export default class Filas {
     async entrar(id_fila, cliente, preferencial, premium) {
         const fila = (await this.fila.findOne({_id: id_fila})).result;
         if (!fila) return {success: false, error: "Fila inexistente"};
-        if ((new Date(fila.data_hora_inicio)) < Date() && (new Date (fila.data_hora_fim)) > Date.now()) {
+        if ((new Date(fila.data_hora_inicio)) < (new Date()) && (new Date (fila.data_hora_fim)) > (new Date())) {
             if (fila.cronologica) {
                 for (let i = 0; i < fila.cronologica.entradas.length; i++) {
                     if (fila.cronologica.entradas[i].id_cliente == cliente) return {success: false, error: "Cliente já está na fila."};

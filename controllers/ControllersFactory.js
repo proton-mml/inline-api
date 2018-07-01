@@ -76,15 +76,6 @@ export default class ControllersFactory {
 				if (cc) return await this.filas.sair(body.id_fila, cc.id_cliente);
 				return {success: false, error: "Usuário inexistente"};
 		    });
-
-		if(/^(\/fila\/sair)$/.test(url))
-			return (async (body, query) => {
-				const validation = EncryptionUtility.validateToken(body.token, 'frangos');
-				if (validation.error) return ({success:false, error: 'token invalido'});
-				const cc = (await ClienteCadastrado.getByEmail(body.email));
-				if (cc) return await this.filas.sair(body.id_fila, cc.id_cliente);
-				return {success: false, error: "Usuário inexistente"};
-		    });
 			
 	    if(/^(\/empresas)/.test(url))
 	        return (async (body, query) => (await Empresa.getAll(body.token)));
