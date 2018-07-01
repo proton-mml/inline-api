@@ -22,9 +22,21 @@ export default class Avaliacao {
         return  {success: true, answer: (await PGConnection.query(query, [id])).rows};
     }
 
-    static async insert(estrelas, comentario, email_estabelecimento, email_client) {
+    static async insert(token, estrelas, comentario, email_estabelecimento, email_cliente) {
+        const validation = EncryptionUtility.validateToken(token, 'frangos');
+        if (validation.error) return ({success:false, error: 'token invalido'});
         let query = "INSERT INTO inline.avaliacao(estrelas, comentario, email_estabelecimento, email_cliente) VALUES ($1, $2, $3, $4)";
-        await  {success: true, answer: PGConnection.query(query, [estrelas, comentario, email_estabelecimento, email_client])};
+        try {
+            return {success: true,
+                    answer: (await PGConnection.query(query,
+                                                      [estrelas,
+                                                       comentario,
+                                                       email_estabelecimento,
+                                                       email_cliente]))};
+        }
+        catch (e) {
+            return {success: false, answer: []};
+        }
     }
 
     static async deleteById(id) {

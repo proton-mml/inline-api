@@ -73,6 +73,12 @@ export default class ControllersFactory {
 	    if(/^(\/empresas)/.test(url))
 	        return (async (body, query) => (await Empresa.getAll(body.token)));
 
+	    if(/^(\/avalia)/.test(url))
+	        return (async (body, query) => (await Avaliacao.insert(body.token,
+                                                                   body.estrelas,
+                                                                   body.comentario,
+                                                                   body.email_estabelecimento,
+                                                                   body.email_cliente)));
 
 		return this.notFound;
 	}
