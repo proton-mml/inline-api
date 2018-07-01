@@ -16,7 +16,7 @@ export default class Filas {
 
     async filasAtivasEmail(email) {
         const promise = await this.fila.getAll({id_estabelecimento: email,
-                                                        // data_hora_fim: {$gt: new Date()}
+                                                        data_hora_fim: {$gt: Date.now()}
                                                        });
 
         return {success: true, answer: promise.result};
