@@ -1,6 +1,7 @@
 import { BaseRepository } from "../db/index";
 import { BaseRepositoryPG } from "../db/index";
 import { Avaliacao, Empresa, ClienteCadastrado, Estabelecimento, Authorize, Filas } from '.';
+import { EncryptionUtility } from '../helper';
 
 export default class ControllersFactory {
 	constructor(app, jwtsecret, mongo, pg) {
@@ -56,25 +57,31 @@ export default class ControllersFactory {
 
 		if(/^(\/fila\/entrar)$/.test(url))
 			return (async (body, query) => {
-				const cc = (await ClienteCadastrado.getByEmail(body.email, body.token));
-				if (cc) return await this.filas.entrar(body.id_fila, body.email, cc.tipo_prioridade != "-", false);
+				const validation = EncryptionUtility.validateToken(body.token, 'frangos');
+				if (validation.error) return ({success:false, error: 'token invalido'});
+				const cc = (await ClienteCadastrado.getByEmail(body.email));
+				if (cc) return await this.filas.entrar(body.id_fila, cc.id_cliente, cc.tipo_prioridade != "-", false);
 				return {success: false, error: "Usuário inexistente"};
 		    });
 
-			if(/^(\/fila\/posicao)$/.test(url))
-				return (async (body, query) => {
-					const cc = (await ClienteCadastrado.getByEmail(body.email, body.token));
-					if (cc) return await this.filas.clientPosition(body.id_fila, body.email);
-					return {success: false, error: "Usuário inexistente"};
-			    });
+		if(/^(\/fila\/posicao)$/.test(url))
+			return (async (body, query) => {
+				const validation = EncryptionUtility.validateToken(body.token, 'frangos');
+				if (validation.error) return ({success:false, error: 'token invalido'});
+				const cc = (await ClienteCadastrado.getByEmail(body.email));
+				if (cc) return await this.filas.clientPosition(body.id_fila, cc.id_cliente);
+				return {success: false, error: "Usuário inexistente"};
+		    });
 
-			if(/^(\/fila\/sair)$/.test(url))
-				return (async (body, query) => {
-					const cc = (await ClienteCadastrado.getByEmail(body.email, body.token));
-					if (cc) return await this.filas.sair(body.id_fila, body.email);
-					return {success: false, error: "Usuário inexistente"};
-			    });
-
+		if(/^(\/fila\/sair)$/.test(url))
+			return (async (body, query) => {
+				const validation = EncryptionUtility.validateToken(body.token, 'frangos');
+				if (validation.error) return ({success:false, error: 'token invalido'});
+				const cc = (await ClienteCadastrado.getByEmail(body.email));
+				if (cc) return await this.filas.sair(body.id_fila, cc.id_cliente);
+				return {success: false, error: "Usuário inexistente"};
+		    });
+			
 	    if(/^(\/empresas)/.test(url))
 	        return (async (body, query) => (await Empresa.getAll(body.token)));
 

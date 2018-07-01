@@ -24,7 +24,7 @@ export default class BaseRepository {
 		const promise = this.model.update (
 			{_id: fila},
 			{$push: {"cronologica.entradas": {
-				"id_usuario": cliente,
+				"id_cliente": cliente,
 				"distancia": distancia,
 				"data_hora_entrada": Date(),
 				"preferencial": preferencial,
@@ -38,7 +38,7 @@ export default class BaseRepository {
 	async pullFromCronologica(fila, cliente) {
 		const promise = this.model.update (
 			{_id: fila},
-			{$pull: {"cronologica.entradas": {"id_usuario": cliente}}, $inc: {"tamanho": -1}},
+			{$pull: {"cronologica.entradas": {"id_cliente": cliente}}, $inc: {"tamanho": -1}},
 		);
 		return await this.resolve(promise);
 	}
