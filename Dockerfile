@@ -1,18 +1,22 @@
-FROM nodejs:alpine
+FROM node:alpine
 
 WORKDIR /
-RUN mkdir inline-backend
+
+RUN apk update
+RUN apk add postgresql-client mongodb
 RUN npm install -g nodemon
+
+RUN mkdir inline-backend
 ADD ./ /inline-backend
 WORKDIR /inline-backend
-RUN npm i
+RUN npm install
 
-ENV PGHOST=35.197.54.173                                          
-ENV PGPORT=5432                                                   
-ENV PGUSER=postgres                                               
-ENV PGPASSWORD=frangos123                                             
-ENV PGDATABASE=postgres                                               
-ENV MONGO_URL=mongodb://marcos:marcos123@35.199.174.155:27017/cool_db
+ENV PGHOST='postgres_db'
+ENV PGPORT='5432'
+ENV PGUSER='postgres'
+ENV PGPASSWORD='pass'
+ENV PGDATABASE='postgres'
+ENV MONGO_URL='mongodb://mongo:mongomongo@mongo_db:27017'
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "wait.sh", "npm", "run", "dev"]
 EXPOSE 3300
