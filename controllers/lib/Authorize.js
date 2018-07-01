@@ -9,6 +9,7 @@ export default class Authorize {
 
   }
   static async login(email, senha) {
+    console.log("dsadas", email, senha);
     let usuario = "SELECT * FROM inline.usuario WHERE usuario.email = $1";
     var resp = (await PGConnection.query(usuario, [email])).rows[0];
     if (resp) {

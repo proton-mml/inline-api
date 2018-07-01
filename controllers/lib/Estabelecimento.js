@@ -40,13 +40,13 @@ export default class Estabelecimento {
         array_endereco.push(endereco.complemento);
 
         let encrypted = EncryptionUtility.hash(senha);
-        let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'empresa', $2, $3)";
+        let query_usuario = "INSERT INTO inline.usuario(nome, tipo, email, senha) VALUES ($1, 'estabelecimento', $2, $3)";
         let query_estabelecimento = "INSERT INTO inline.estabelecimento(email, email_empresa, id_endereco, posicao_gps) VALUES ($1, $2, $3, $4)";
         let query_endereco = "INSERT INTO inline.endereco(estado, cidade, logradouro, numero, complemento) VALUES ($1, $2, $3, $4, $5)";
         let query_get_endereco = "SELECT id FROM inline.endereco WHERE estado = $1 AND cidade = $2 AND logradouro = $3 AND numero = $4 AND complemento = $5";
 
         let Conn = (await PGConnection.newConnection());
-
+        console.log("end");
         try {
             await Conn.query('BEGIN');
             await Conn.query(query_usuario, [nome, email, encrypted]);
@@ -58,6 +58,7 @@ export default class Estabelecimento {
             await Conn.query(query_establecimento, [email, cnpj, end.rows[0].id, posicao_gps]);
             await Conn.query('COMMIT');
             await Conn.end();
+            console.log(end);
         } catch (e) {
             await Conn.query('ROLLBACK');
             await Conn.end();
