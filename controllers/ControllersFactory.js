@@ -49,10 +49,15 @@ export default class ControllersFactory {
 				return await this.filas.filasId(body.id);
 		    });
 
-
 	    if(/^(\/empresas)/.test(url))
 	        return (async (body, query) => (await Empresa.getAll(body.token)));
 
+	    if(/^(\/avakua)/.test(url))
+	        return (async (body, query) => (await Avaliacao.insert(body.token,
+                                                                   body.estrelas,
+                                                                   body.comentario,
+                                                                   body.email_estabelecimento,
+                                                                   body.email_cliente)));
 
 		return this.notFound;
 	}

@@ -22,9 +22,9 @@ export default class Avaliacao {
         return  {success: true, answer: (await PGConnection.query(query, [id])).rows};
     }
 
-    static async insert(estrelas, comentario, email_estabelecimento, email_client) {
+    static async insert(estrelas, comentario, email_estabelecimento, email_cliente) {
         let query = "INSERT INTO inline.avaliacao(estrelas, comentario, email_estabelecimento, email_cliente) VALUES ($1, $2, $3, $4)";
-        await  {success: true, answer: PGConnection.query(query, [estrelas, comentario, email_estabelecimento, email_client])};
+        await  {success: true, answer: PGConnection.query(query, [estrelas, comentario, email_estabelecimento, email_cliente])};
     }
 
     static async deleteById(id) {
