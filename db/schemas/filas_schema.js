@@ -9,7 +9,7 @@ export function filas(Schema) {
 			  aceita_premium: Boolean,
 			  aceita_preferencial: Boolean,
 		    entradas: [{
-				id_cliente: String,
+				id_cliente: Number,
 				distancia: String,
 			    data_hora_entrada: String,
 			    preferencial: Boolean,
@@ -17,7 +17,7 @@ export function filas(Schema) {
 			    posicao: Number
 			}],
 		    concluidos:[{
-				id_cliente: String,
+				id_cliente: Number,
 				distancia: String,
 			    data_hora_entrada: String,
 			    preferencial: Boolean,
@@ -29,12 +29,12 @@ export function filas(Schema) {
 		},
 		agendada: {
 		    agendamentos:[{
-				id_cliente: String,
+				id_cliente: Number,
 			    data_hora_agendada: String,
 			    data_hora_criacao: String
 			}],
 		    agendamentos_concluidos:[{
-				 id_cliente: String,
+				 id_cliente: Number,
 			    data_hora_agendada: String,
 			    data_hora_criacao: String,
 			    desistencia_ou_atendido: String
