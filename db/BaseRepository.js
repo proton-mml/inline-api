@@ -20,6 +20,29 @@ export default class BaseRepository {
 		return await this.resolve(this.model.findOneAndUpdate(query, info, options));
 	}
 
+	async pushToCronologica(fila, cliente, preferencial, premium, posicao, distancia = "0") {
+		const promise = this.model.update (
+			{_id: fila},
+			{$push: {"cronologica.entradas": {
+				"id_usuario": cliente,
+				"distancia": distancia,
+				"data_hora_entrada": Date(),
+				"preferencial": preferencial,
+				"premium": premium,
+				"posicao": posicao
+			}}, $inc: {"tamanho": 1}},
+		);
+		return await this.resolve(promise);
+	}
+
+	async pullFromCronologica(fila, cliente) {
+		const promise = this.model.update (
+			{_id: fila},
+			{$pull: {"cronologica.entradas": {"id_usuario": cliente}}, $inc: {"tamanho": -1}},
+		);
+		return await this.resolve(promise);
+	}
+
 	async delete(query) {
 		return await this.resolve(this.model.remove(query));
 	}
