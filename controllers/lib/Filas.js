@@ -35,7 +35,7 @@ export default class Filas {
         if (!fila) return {success: false, error: "Fila inexistente"};
         if (fila.cronologica) {
             for (let i = 0; i < fila.cronologica.entradas.length; i++) {
-                if (fila.cronologica.entradas[i].id_usuario == cliente) return {success: true, answer: {posicao: fila.cronologica.entradas[i].posicao}};
+                if (fila.cronologica.entradas[i].id_cliente == cliente) return {success: true, answer: {posicao: fila.cronologica.entradas[i].posicao}};
             }
             return {success: true, answer: {posicao: undefined}}
         } else return {success: false, error: "Fila agendada não suportada ainda."};
@@ -47,7 +47,7 @@ export default class Filas {
         if ((new Date(fila.data_hora_inicio)) < Date.now() && (new Date (fila.data_hora_fim)) > Date.now()) {
             if (fila.cronologica) {
                 for (let i = 0; i < fila.cronologica.entradas.length; i++) {
-                    if (fila.cronologica.entradas[i].id_usuario == cliente) return {success: false, error: "Cliente já está na fila."};
+                    if (fila.cronologica.entradas[i].id_cliente == cliente) return {success: false, error: "Cliente já está na fila."};
                 }
 
                 //coloca cliente na fila
