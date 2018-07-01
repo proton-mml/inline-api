@@ -46,13 +46,14 @@ export default class BaseRepository {
         entrada.desistencia_ou_atendido = "atendido";
         entrada.data_hora_saida = new Date();
 
-        
+        await this.resolve(this.model.update(
+            {_id: mongoose.Types.ObjectId(fila)},
+            {$push: {'cronologica.concluidos': entrada}}));
 
-		// const promise = this.model.update (
-		// 	{_id: fila},
-		// 	{$pull: {"cronologica.entradas": {"id_cliente": cliente}}, $inc: {"tamanho": -1}},
-		// );
-        return;
+        await this.resolve(this.model.update(
+            {_id: mongoose.Types.ObjectId('5b39511e9d2c691faf96d820')},
+            {$pull: {'cronologica.entradas': {id_cliente: 4}}}));
+
 		return await this.resolve(promise);
 	}
 
