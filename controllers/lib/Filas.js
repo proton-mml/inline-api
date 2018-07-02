@@ -1,4 +1,5 @@
 import { EncryptionUtility } from '../../helper';
+import mongoose from 'mongoose';
 
 export default class Filas {
     constructor(jwtsecret, fila) {
@@ -39,7 +40,7 @@ export default class Filas {
     }
 
     async entrar(id_fila, cliente, preferencial, premium) {
-        const fila = (await this.fila.findOne({_id: id_fila})).result;
+        const fila = (await this.fila.findOne({_id: mongoose.Types.ObjectId(id_fila)})).result;
         if (!fila) return {success: false, error: "Fila inexistente"};
         if ((new Date(fila.data_hora_inicio)) < (new Date()) &&
             (new Date (fila.data_hora_fim)) > (new Date())) {
@@ -50,7 +51,7 @@ export default class Filas {
 
                 //coloca cliente na fila
                 const posicao = fila.tamanho + 1;
-                const promise = await this.fila.pushToCronologica(id_fila, cliente, preferencial, premium, posicao);
+                const promise = await this.fila.pushToCronologica(mongoose.Types.ObjectId(id_fila), cliente, preferencial, premium, posicao);
                 return {success: true, answer: {posicao: posicao}};
             }
             else {
@@ -61,7 +62,7 @@ export default class Filas {
     }
 
     async sair(id_fila, cliente) {
-        const fila = (await this.fila.findOne({_id: id_fila})).result;
+        const fila = (await this.fila.findOne({_id: mongoose.Types.ObjectId(id_fila)})).result;
         if (!fila) return {success: false, error: "Fila inexistente"};
             if (fila.cronologica) {
                 const promise = await this.fila.pullFromCronologica(id_fila, cliente);

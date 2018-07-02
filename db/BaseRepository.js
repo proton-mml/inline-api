@@ -22,7 +22,7 @@ export default class BaseRepository {
 	}
 
 	async pushToCronologica(fila, cliente, preferencial, premium, posicao, distancia = "0") {
-		const promise = this.model.update (
+		const promise = this.model.update(
 			{_id: fila},
 			{$push: {"cronologica.entradas": {
 				"id_cliente": cliente,
@@ -31,7 +31,7 @@ export default class BaseRepository {
 				"preferencial": preferencial,
 				"premium": premium,
 				"posicao": posicao
-			}}, $inc: {"tamanho": 1}},
+			}}, $inc: {"tamanho": 1}}
 		);
 		return await this.resolve(promise);
 	}
@@ -50,11 +50,13 @@ export default class BaseRepository {
             {_id: mongoose.Types.ObjectId(fila)},
             {$push: {'cronologica.concluidos': entrada}}));
 
-        await this.resolve(this.model.update(
-            {_id: mongoose.Types.ObjectId('5b39511e9d2c691faf96d820')},
-            {$pull: {'cronologica.entradas': {id_cliente: 4}}}));
+		await this.resolve(this.model.update(
+            {_id: mongoose.Types.ObjectId(fila)},
+            {$inc: {'tamanho': -1}}));
 
-		return await this.resolve(promise);
+        return await this.resolve(this.model.update(
+            {_id: mongoose.Types.ObjectId(fila)},
+            {$pull: {'cronologica.entradas': {id_cliente: cliente}}}));
 	}
 
 	async delete(query) {
