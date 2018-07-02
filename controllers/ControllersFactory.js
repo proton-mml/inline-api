@@ -9,18 +9,18 @@ export default class ControllersFactory {
 	}
 
 	postControllers(url) {
-		if(/^\/estabelecimentos/.test(url))
+		if(/^\/estabelecimentos$/.test(url))
 			return (async (body, query) => {
+				console.log(body, query);
 				return await Estabelecimento.getByEmpresa(body.email_empresa, body.token);
 			});
 
-		if(/^\/estabelecimento/.test(url))
+		if(/^\/estabelecimento$/.test(url))
 			return (async (body, query) => {
 				return await Estabelecimento.getByEmail(body.email_estabelecimento, body.token);
 			});
 
 		if(/^\/estabelecimento_novo/.test(url)) {
-			console.log("body, query");
 			return (async (body, query) => {
 				return await Estabelecimento.insert(body.nome, body.email, body.email_empresa, body.endereco, body.posicao_gps, body.senha, body.cnpj, body.token);
 			});
