@@ -41,7 +41,8 @@ export default class Filas {
     async entrar(id_fila, cliente, preferencial, premium) {
         const fila = (await this.fila.findOne({_id: id_fila})).result;
         if (!fila) return {success: false, error: "Fila inexistente"};
-        if ((new Date(fila.data_hora_inicio)) < (new Date()) && (new Date (fila.data_hora_fim)) > (new Date())) {
+        if ((new Date(fila.data_hora_inicio)) < (new Date()) &&
+            (new Date (fila.data_hora_fim)) > (new Date())) {
             if (fila.cronologica) {
                 for (let i = 0; i < fila.cronologica.entradas.length; i++) {
                     if (fila.cronologica.entradas[i].id_cliente == cliente) return {success: false, error: "Cliente já está na fila."};
@@ -54,10 +55,6 @@ export default class Filas {
             }
             else {
                 return {success: false, error: "Entrada em filas agendadas não suportada no momento."};
-                // for (agendamento in fila.agendada.agendamentos)
-                //     if ((new Date(agendamento.data_hora_agendada) == hora)
-                //         return {success:false, error: "Já existe outro agendamento este horário."};
-                // // inserir cliente aqui
             }
         }
         else return {success: false, error: "Fila não está aberta."};
