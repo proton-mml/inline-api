@@ -38,7 +38,7 @@ export default class BaseRepository {
 	async pullFromCronologica(fila, cliente) {
 		const promise = this.model.update (
 			{_id: fila},
-			{$pull: {"cronologica.entradas": {"id_cliente": cliente}}, $inc: {"tamanho": -1}},
+			{$pull: {"cronologica.entradas": {$elemMatch: {"id_cliente": cliente}}}, $inc: {"tamanho": -1}}
 		);
 		return await this.resolve(promise);
 	}

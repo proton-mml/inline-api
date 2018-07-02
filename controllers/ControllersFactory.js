@@ -68,6 +68,23 @@ export default class ControllersFactory {
 				return {success: false, error: "Usuário inexistente"};
 		    });
 
+		if(/^(\/fila\/proximo)$/.test(url))
+			return (async (body, query) => {
+				const validation = EncryptionUtility.validateToken(body.token, 'frangos');
+				if (validation.error) return ({success:false, error: 'token invalido'});
+				let resp = (await this.filas.proximo(body.id_fila));
+				if (resp.success) {
+					const cc = (await ClienteCadastrado.getByClienteId(resp.answer.id_cliente));
+					if (cc) {
+						resp.answer.nome = cc.nome;
+						resp.answer.email = cc.email;
+						resp.answer.telefone_celular = cc.telefone_celular;
+						resp.answer.tipo_prioridade = cc.tipo_prioridade;
+					}
+				}
+				return resp;
+			});
+
 		if(/^(\/fila\/sair)$/.test(url))
 			return (async (body, query) => {
 				const validation = EncryptionUtility.validateToken(body.token, 'frangos');
@@ -76,7 +93,7 @@ export default class ControllersFactory {
 				if (cc) return await this.filas.sair(body.id_fila, cc.id_cliente);
 				return {success: false, error: "Usuário inexistente"};
 		    });
-			
+
 	    if(/^(\/empresas)/.test(url))
 	        return (async (body, query) => (await Empresa.getAll(body.token)));
 

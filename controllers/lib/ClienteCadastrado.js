@@ -8,6 +8,11 @@ export default class ClienteCadastrado {
                                         [email])).rows[0];
     }
 
+    static async getByClienteId(id_cliente) {
+        return (await PGConnection.query("SELECT * FROM inline.usuario, inline.cliente_cadastrado, inline.cliente WHERE usuario.email = cliente_cadastrado.email AND cliente.id = cliente_cadastrado.id_cliente AND cliente.id = $1",
+                                        [id_cliente])).rows[0];
+    }
+
     static async insert (nome, email, celular, prioridade, senha) {
         let encrypted = EncryptionUtility.hash(senha);
         let usuario = "SELECT * FROM inline.usuario WHERE usuario.email = $1";
